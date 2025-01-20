@@ -122,7 +122,7 @@ monatl_gesamtausgaben = (
 
 # Kapitaldienst berechnen
 monatl_einkommen = nettoeinkommen + zusatz_einkommen
-kapitaldienst = monatl_einkommen - monatl_gesamtausgaben
+kapitaldienst = max(0, monatl_einkommen - monatl_gesamtausgaben)  # Negative Werte vermeiden
 
 # Ergebnisse anzeigen
 st.markdown("## Ergebnisse")
@@ -144,18 +144,16 @@ st.markdown(
 )
 
 # Kapitaldienstgrafik
-fig, ax = plt.subplots()
-labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
-data = [max(0, kapitaldienst), monatl_gesamtausgaben]
-colors = ["#76c7c0", "#ff6f61"]
+if kapitaldienst > 0:  # Diagramm nur erstellen, wenn Kapitaldienst positiv ist
+    fig, ax = plt.subplots()
+    labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
+    data = [kapitaldienst, monatl_gesamtausgaben]
+    colors = ["#76c7c0", "#ff6f61"]
+    ax.pie(data, labels=labels, autopct="%1.1f%%", startangle=90, colors=colors)
+    ax.axis("equal")
+    plt.title("Kapitaldienstaufteilung")
+    st.pyplot(fig)
+else:
+    st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
 
-# Verhindern, dass negative Werte gezeichnet werden
-if kapitaldienst < 0:
-    labels.remove("Verfügbar für Kredit")
-    data[0] = 0
-
-ax.pie(data, labels=labels, autopct="%1.1f%%", startangle=90, colors=colors)
-ax.axis("equal")
-plt.title("Kapitaldienstaufteilung")
-st.pyplot(fig)
 
