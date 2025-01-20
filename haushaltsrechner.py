@@ -114,46 +114,49 @@ else:
     else:
         wohnkosten = bewirtschaftungskosten
 
-# Gesamtausgaben berechnen
-monatl_gesamtausgaben = (
-    lebenshaltungspauschale + auto_kosten + versicherungen + kredite_sparraten + 
-    andere_ausgaben + wohnkosten
-)
+# Berechnung starten
+if st.button("Ergebnisse anzeigen"):
+    # Gesamtausgaben berechnen
+    monatl_gesamtausgaben = (
+        lebenshaltungspauschale + auto_kosten + versicherungen + kredite_sparraten + 
+        andere_ausgaben + wohnkosten
+    )
 
-# Kapitaldienst berechnen
-monatl_einkommen = nettoeinkommen + zusatz_einkommen
-kapitaldienst = max(0, monatl_einkommen - monatl_gesamtausgaben)  # Negative Werte vermeiden
+    # Kapitaldienst berechnen
+    monatl_einkommen = nettoeinkommen + zusatz_einkommen
+    kapitaldienst = max(0, monatl_einkommen - monatl_gesamtausgaben)  # Negative Werte vermeiden
 
-# Ergebnisse anzeigen
-st.markdown("## Ergebnisse")
-st.markdown(
-    f"""
-    ### Monatliche Ausgaben
-    - Gesamte Lebenshaltungskosten: **{lebenshaltungspauschale + auto_kosten:,.2f} €**
-    - Versicherungen und Unterhaltszahlungen: **{versicherungen:,.2f} €**
-    - Kredite und Sparraten: **{kredite_sparraten:,.2f} €**
-    - Wohnkosten: **{wohnkosten:,.2f} €**
-    - Zusätzliche Ausgaben: **{andere_ausgaben:,.2f} €**
+    # Ergebnisse anzeigen
+    st.markdown("## Ergebnisse")
+    st.markdown(
+        f"""
+        ### Monatliche Ausgaben
+        - Gesamte Lebenshaltungskosten: **{lebenshaltungspauschale + auto_kosten:,.2f} €**
+        - Versicherungen und Unterhaltszahlungen: **{versicherungen:,.2f} €**
+        - Kredite und Sparraten: **{kredite_sparraten:,.2f} €**
+        - Wohnkosten: **{wohnkosten:,.2f} €**
+        - Zusätzliche Ausgaben: **{andere_ausgaben:,.2f} €**
 
-    ### Monatliches Einkommen
-    - Gesamteinkommen: **{monatl_einkommen:,.2f} €**
+        ### Monatliches Einkommen
+        - Gesamteinkommen: **{monatl_einkommen:,.2f} €**
 
-    ### Kapitaldienst
-    - Verfügbarer Betrag für den Kredit: **{kapitaldienst:,.2f} €**
-    """
-)
+        ### Kapitaldienst
+        - Verfügbarer Betrag für den Kredit: **{kapitaldienst:,.2f} €**
+        """
+    )
 
-# Kapitaldienstgrafik
-if kapitaldienst > 0:  # Diagramm nur erstellen, wenn Kapitaldienst positiv ist
-    fig, ax = plt.subplots()
-    labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
-    data = [kapitaldienst, monatl_gesamtausgaben]
-    colors = ["#76c7c0", "#ff6f61"]
-    ax.pie(data, labels=labels, autopct="%1.1f%%", startangle=90, colors=colors)
-    ax.axis("equal")
-    plt.title("Kapitaldienstaufteilung")
-    st.pyplot(fig)
-else:
-    st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+    # Kapitaldienstgrafik
+    if kapitaldienst > 0:  # Diagramm nur erstellen, wenn Kapitaldienst positiv ist
+        fig, ax = plt.subplots()
+        labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
+        data = [kapitaldienst, monatl_gesamtausgaben]
+        colors = ["#76c7c0", "#ff6f61"]
+        ax.pie(data, labels=labels, autopct="%1.1f%%", startangle=90, colors=colors)
+        ax.axis("equal")
+        plt.title("Kapitaldienstaufteilung")
+        st.pyplot(fig)
+    else:
+        st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+
 
 
