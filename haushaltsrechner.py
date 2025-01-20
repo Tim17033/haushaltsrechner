@@ -146,9 +146,16 @@ st.markdown(
 # Kapitaldienstgrafik
 fig, ax = plt.subplots()
 labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
-data = [kapitaldienst, monatl_gesamtausgaben]
+data = [max(0, kapitaldienst), monatl_gesamtausgaben]
 colors = ["#76c7c0", "#ff6f61"]
+
+# Verhindern, dass negative Werte gezeichnet werden
+if kapitaldienst < 0:
+    labels.remove("Verfügbar für Kredit")
+    data[0] = 0
+
 ax.pie(data, labels=labels, autopct="%1.1f%%", startangle=90, colors=colors)
 ax.axis("equal")
 plt.title("Kapitaldienstaufteilung")
 st.pyplot(fig)
+
