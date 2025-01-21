@@ -22,10 +22,11 @@ pauschalen_df = pd.DataFrame(pauschalen_data)
 def berechne_pauschale(nettoeinkommen, personen):
     for index, row in pauschalen_df.iterrows():
         grenze = row["Nettoeinkommen"].split("bis ")[-1]
-        if grenze == "5000":
-            if nettoeinkommen > 5000:
-                return row[f"{personen} Personen"]
-        elif nettoeinkommen <= float(grenze.replace(".", "")):
+        try:
+            grenze = float(grenze.replace(".", ""))
+        except ValueError:
+            grenze = float("inf")  # Für "ab 5000" setzen wir eine sehr hohe Grenze
+        if nettoeinkommen <= grenze:
             return row[f"{personen} Personen"]
     return pauschalen_df.iloc[-1][f"{personen} Personen"]
 
@@ -177,4 +178,5 @@ if st.button("Ergebnisse anzeigen"):
         st.pyplot(fig)
     else:
         st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+
 
