@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # Haushaltsrechner App
 st.title("🏠 Haushaltsrechner für Kredit- und Baufinanzierung")
-st.write("Herzlich Willkommen! Beantworten Sie die folgenden Fragen Schritt für Schritt. Wir helfen Ihnen, Ihre finanzielle Situation zu analysieren.")
+st.write("Herzlich Willkommen! Beantworten Sie die folgenden Fragen Schritt für Schritt. Klicken Sie abschließend auf 'Ergebnisse anzeigen', um Ihre Analyse zu erhalten.")
 
 # Schritt 1: Kreditnehmer
 kreditnehmer = st.radio(
@@ -114,7 +114,7 @@ else:
     else:
         wohnkosten = bewirtschaftungskosten
 
-# Berechnung starten
+# Ergebnisse nur anzeigen, wenn Button geklickt wird
 if st.button("Ergebnisse anzeigen"):
     # Gesamtausgaben berechnen
     monatl_gesamtausgaben = (
@@ -124,7 +124,7 @@ if st.button("Ergebnisse anzeigen"):
 
     # Kapitaldienst berechnen
     monatl_einkommen = nettoeinkommen + zusatz_einkommen
-    kapitaldienst = max(0, monatl_einkommen - monatl_gesamtausgaben)  # Negative Werte vermeiden
+    kapitaldienst = monatl_einkommen - monatl_gesamtausgaben
 
     # Ergebnisse anzeigen
     st.markdown("## Ergebnisse")
@@ -146,7 +146,7 @@ if st.button("Ergebnisse anzeigen"):
     )
 
     # Kapitaldienstgrafik
-    if kapitaldienst > 0:  # Diagramm nur erstellen, wenn Kapitaldienst positiv ist
+    if kapitaldienst > 0:
         fig, ax = plt.subplots()
         labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
         data = [kapitaldienst, monatl_gesamtausgaben]
@@ -157,6 +157,3 @@ if st.button("Ergebnisse anzeigen"):
         st.pyplot(fig)
     else:
         st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
-
-
-
