@@ -30,14 +30,14 @@ def berechne_pauschale(nettoeinkommen, personen):
     return pauschalen_df.iloc[-1][f"{personen} Personen"]
 
 # Haushaltsrechner App
-st.title("\ud83c\udfe0 Haushaltsrechner f\u00fcr Kredit- und Baufinanzierung")
-st.write("Herzlich Willkommen! Beantworten Sie die folgenden Fragen Schritt f\u00fcr Schritt. Klicken Sie abschlie\u00dfend auf 'Ergebnisse anzeigen', um Ihre Analyse zu erhalten.")
+st.title("🏠 Haushaltsrechner für Kredit- und Baufinanzierung")
+st.write("Herzlich Willkommen! Beantworten Sie die folgenden Fragen Schritt für Schritt. Klicken Sie abschließend auf 'Ergebnisse anzeigen', um Ihre Analyse zu erhalten.")
 
 # Eingaben
 kreditnehmer = st.radio(
     "Wird der Kredit von einer alleinstehenden Person oder einem Ehepaar aufgenommen?",
     ("Alleinstehend", "Ehepaar"),
-    help="W\u00e4hlen Sie die passende Option aus, um die Einkommenssituation richtig zu erfassen."
+    help="Wählen Sie die passende Option aus, um die Einkommenssituation richtig zu erfassen."
 )
 
 kinder = st.number_input(
@@ -48,21 +48,21 @@ kinder = st.number_input(
 
 if kreditnehmer == "Alleinstehend":
     nettoeinkommen = st.number_input(
-        "Nettoeinkommen der alleinstehenden Person (\u20ac):",
+        "Nettoeinkommen der alleinstehenden Person (€):",
         min_value=0.0, step=100.0,
         help="Tragen Sie das monatliche Nettoeinkommen ein."
     )
 else:
     nettoeinkommen = st.number_input(
-        "Gemeinsames Nettoeinkommen des Ehepaares (\u20ac):",
+        "Gemeinsames Nettoeinkommen des Ehepaares (€):",
         min_value=0.0, step=100.0,
         help="Tragen Sie das gemeinsame monatliche Nettoeinkommen ein."
     )
 
 zusatz_einkommen = st.number_input(
-    "Gibt es andere Einkommen (z.B. aus Vermietung und Verpachtung)? (\u20ac):",
+    "Gibt es andere Einkommen (z.B. aus Vermietung und Verpachtung)? (€):",
     min_value=0.0, step=50.0,
-    help="Zus\u00e4tzliche monatliche Einnahmen neben dem Nettoeinkommen."
+    help="Zusätzliche monatliche Einnahmen neben dem Nettoeinkommen."
 )
 
 # Automatische Lebenshaltungspauschale
@@ -71,35 +71,35 @@ if kreditnehmer and kinder is not None and nettoeinkommen:
     personen += kinder
     lebenshaltungspauschale = berechne_pauschale(nettoeinkommen, personen)
     lebenshaltungspauschale = st.number_input(
-        "Wie hoch ist die Lebenshaltungspauschale? (\u20ac):",
+        "Wie hoch ist die Lebenshaltungspauschale? (€):",
         value=lebenshaltungspauschale,
         step=50.0,
-        help="Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet. Sie k\u00f6nnen ihn anpassen."
+        help="Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet. Sie können ihn anpassen."
     )
 
 autos = st.number_input(
     "Wie viele Autos gibt es im Haushalt?",
     min_value=0, max_value=5, step=1,
-    help="F\u00fcr jedes Auto setzen wir pauschal 250\u20ac an."
+    help="Für jedes Auto setzen wir pauschal 250€ an."
 )
 auto_kosten = autos * 250
 
 versicherungen = st.number_input(
-    "Monatliche Kosten f\u00fcr Lebens-, Unfallversicherungen oder Unterhaltszahlungen (\u20ac):",
+    "Monatliche Kosten für Lebens-, Unfallversicherungen oder Unterhaltszahlungen (€):",
     min_value=0.0, step=50.0,
-    help="Geben Sie die Gesamtkosten an, die f\u00fcr solche Verpflichtungen monatlich anfallen."
+    help="Geben Sie die Gesamtkosten an, die für solche Verpflichtungen monatlich anfallen."
 )
 
 kredite_sparraten = st.number_input(
-    "Gibt es bestehende Kredite oder Sparraten? (\u20ac):",
+    "Gibt es bestehende Kredite oder Sparraten? (€):",
     min_value=0.0, step=50.0,
-    help="Geben Sie die Gesamtkosten f\u00fcr bestehende Kredite oder Sparvertr\u00e4ge an."
+    help="Geben Sie die Gesamtkosten für bestehende Kredite oder Sparverträge an."
 )
 
 andere_ausgaben = st.number_input(
-    "Andere \u00fcberm\u00e4\u00dfige Ausgaben (z.B. teurer Kindergarten, Mitgliedschaften)? (\u20ac):",
+    "Andere übermäßige Ausgaben (z.B. teurer Kindergarten, Mitgliedschaften)? (€):",
     min_value=0.0, step=50.0,
-    help="Tragen Sie besondere monatliche Ausgaben ein, die \u00fcber die normalen Kosten hinausgehen."
+    help="Tragen Sie besondere monatliche Ausgaben ein, die über die normalen Kosten hinausgehen."
 )
 
 wohnsituation = st.radio(
@@ -110,7 +110,7 @@ wohnsituation = st.radio(
 
 if wohnsituation == "Miete":
     warmmiete = st.number_input(
-        "Wie hoch ist die monatliche Warmmiete? (\u20ac):",
+        "Wie hoch ist die monatliche Warmmiete? (€):",
         min_value=0.0, step=50.0,
         help="Die Warmmiete umfasst Miete, Betriebskosten und Heizkosten."
     )
@@ -129,9 +129,9 @@ else:
     bewirtschaftungskosten = qm * 3.5
     if eigentum_typ == "Wohnung":
         hausgeld = st.number_input(
-            "Wie hoch ist das Hausgeld? (\u20ac):",
+            "Wie hoch ist das Hausgeld? (€):",
             min_value=0.0, step=50.0,
-            help="Das Hausgeld umfasst Betriebskosten, R\u00fccklagen und Verwaltungsgeb\u00fchren."
+            help="Das Hausgeld umfasst Betriebskosten, Rücklagen und Verwaltungsgebühren."
         )
         wohnkosten = bewirtschaftungskosten + hausgeld
     else:
@@ -150,27 +150,27 @@ if st.button("Ergebnisse anzeigen"):
     st.markdown(
         f"""
         ### Monatliche Ausgaben
-        - Gesamte Lebenshaltungskosten: **{lebenshaltungspauschale + auto_kosten:,.2f} \u20ac**
-        - Versicherungen und Unterhaltszahlungen: **{versicherungen:,.2f} \u20ac**
-        - Kredite und Sparraten: **{kredite_sparraten:,.2f} \u20ac**
-        - Wohnkosten: **{wohnkosten:,.2f} \u20ac**
-        - Zus\u00e4tzliche Ausgaben: **{andere_ausgaben:,.2f} \u20ac**
+        - Gesamte Lebenshaltungskosten: **{lebenshaltungspauschale + auto_kosten:,.2f} €**
+        - Versicherungen und Unterhaltszahlungen: **{versicherungen:,.2f} €**
+        - Kredite und Sparraten: **{kredite_sparraten:,.2f} €**
+        - Wohnkosten: **{wohnkosten:,.2f} €**
+        - Zusätzliche Ausgaben: **{andere_ausgaben:,.2f} €**
 
         ### Monatliches Einkommen
-        - Gesamteinkommen: **{monatl_einkommen:,.2f} \u20ac**
+        - Gesamteinkommen: **{monatl_einkommen:,.2f} €**
 
         ### Kapitaldienst
-        - Verf\u00fcgbarer Betrag f\u00fcr den Kredit: **{kapitaldienst:,.2f} \u20ac**
+        - Verfügbarer Betrag für den Kredit: **{kapitaldienst:,.2f} €**
         """
     )
 
     if kapitaldienst > 0:
         fig, ax = plt.subplots()
-        labels = ["Verf\u00fcgbar f\u00fcr Kredit", "Gesamtausgaben"]
+        labels = ["Verfügbar für Kredit", "Gesamtausgaben"]
         data = [kapitaldienst, monatl_gesamtausgaben]
         ax.pie(data, labels=labels, autopct="%1.1f%%", startangle=90)
         ax.axis("equal")
         plt.title("Kapitaldienstaufteilung")
         st.pyplot(fig)
     else:
-        st.warning("Der verf\u00fcgbare Betrag f\u00fcr den Kredit ist 0 \u20ac. Es kann kein Diagramm erstellt werden.")
+        st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
