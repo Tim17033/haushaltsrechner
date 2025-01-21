@@ -65,14 +65,17 @@ zusatz_einkommen = st.number_input(
     help="Zusätzliche monatliche Einnahmen neben dem Nettoeinkommen."
 )
 
+# Nettohaushaltseinkommen berechnen
+nettohaushaltseinkommen = nettoeinkommen + zusatz_einkommen
+
 # Automatische Lebenshaltungspauschale
-if kreditnehmer and kinder is not None and nettoeinkommen:
+if kreditnehmer and kinder is not None and nettohaushaltseinkommen:
     personen = 1 if kreditnehmer == "Alleinstehend" else 2
     personen += kinder
-    lebenshaltungspauschale = berechne_pauschale(nettoeinkommen, personen)
+    lebenshaltungspauschale = berechne_pauschale(nettohaushaltseinkommen, personen)
     lebenshaltungspauschale = st.number_input(
         "Wie hoch ist die Lebenshaltungspauschale? (€):",
-        value=lebenshaltungspauschale,
+        value=float(lebenshaltungspauschale),
         step=50.0,
         help="Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet. Sie können ihn anpassen."
     )
@@ -143,7 +146,7 @@ if st.button("Ergebnisse anzeigen"):
         lebenshaltungspauschale + auto_kosten + versicherungen +
         kredite_sparraten + andere_ausgaben + wohnkosten
     )
-    monatl_einkommen = nettoeinkommen + zusatz_einkommen
+    monatl_einkommen = nettohaushaltseinkommen
     kapitaldienst = monatl_einkommen - monatl_gesamtausgaben
 
     st.markdown("## Ergebnisse")
@@ -174,3 +177,4 @@ if st.button("Ergebnisse anzeigen"):
         st.pyplot(fig)
     else:
         st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+
