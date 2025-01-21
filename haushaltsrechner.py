@@ -33,39 +33,46 @@ def berechne_pauschale(nettoeinkommen, personen):
 
 # Haushaltsrechner App
 st.title("🏠 Haushaltsrechner für Kredit- und Baufinanzierung")
-st.write("Herzlich Willkommen! Beantworten Sie die folgenden Fragen Schritt für Schritt. Klicken Sie abschließend auf 'Ergebnisse anzeigen', um Ihre Analyse zu erhalten.")
+st.markdown(
+    """
+    **Willkommen zum Haushaltsrechner!**
+    Beantworten Sie Schritt für Schritt die folgenden Fragen, um Ihre monatlichen Ausgaben und Ihr verfügbares Einkommen zu analysieren.
+    """
+)
 
 # Eingaben
+st.markdown("### Informationen zum Kreditnehmer")
 kreditnehmer = st.radio(
     "Wird der Kredit von einer alleinstehenden Person oder einem Ehepaar aufgenommen?",
-    ("Alleinstehend", "Ehepaar"),
-    help="Wählen Sie die passende Option aus, um die Einkommenssituation richtig zu erfassen."
+    ("Alleinstehend", "Ehepaar")
 )
+st.caption("Wählen Sie die passende Option, um die Einkommenssituation richtig zu erfassen.")
 
 kinder = st.number_input(
     "Wie viele Kinder leben im Haushalt?",
-    min_value=0, max_value=10, step=1,
-    help="Geben Sie die Anzahl der Kinder an, da diese die Lebenshaltungskosten beeinflussen."
+    min_value=0, max_value=10, step=1
 )
+st.caption("Geben Sie die Anzahl der Kinder an, da diese die Lebenshaltungskosten beeinflussen.")
 
+st.markdown("### Einkommensangaben")
 if kreditnehmer == "Alleinstehend":
     nettoeinkommen = st.number_input(
         "Nettoeinkommen der alleinstehenden Person (€):",
-        min_value=0.0, step=100.0,
-        help="Tragen Sie das monatliche Nettoeinkommen ein."
+        min_value=0.0, step=100.0
     )
+st.caption("Tragen Sie das monatliche Nettoeinkommen ein.")
 else:
     nettoeinkommen = st.number_input(
         "Gemeinsames Nettoeinkommen des Ehepaares (€):",
-        min_value=0.0, step=100.0,
-        help="Tragen Sie das gemeinsame monatliche Nettoeinkommen ein."
+        min_value=0.0, step=100.0
     )
+st.caption("Tragen Sie das gemeinsame monatliche Nettoeinkommen ein.")
 
 zusatz_einkommen = st.number_input(
     "Gibt es andere Einkommen (z.B. aus Vermietung und Verpachtung)? (€):",
-    min_value=0.0, step=50.0,
-    help="Zusätzliche monatliche Einnahmen neben dem Nettoeinkommen."
+    min_value=0.0, step=50.0
 )
+st.caption("Zusätzliche monatliche Einnahmen neben dem Nettoeinkommen.")
 
 # Nettohaushaltseinkommen berechnen
 nettohaushaltseinkommen = nettoeinkommen + zusatz_einkommen
@@ -75,69 +82,67 @@ if kreditnehmer and kinder is not None and nettohaushaltseinkommen:
     personen = 1 if kreditnehmer == "Alleinstehend" else 2
     personen += kinder
     lebenshaltungspauschale = berechne_pauschale(nettohaushaltseinkommen, personen)
-    lebenshaltungspauschale = st.number_input(
-        "Wie hoch ist die Lebenshaltungspauschale? (€):",
-        value=float(lebenshaltungspauschale),
-        step=50.0,
-        help="Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet. Sie können ihn anpassen."
-    )
+    st.markdown(f"### Lebenshaltungspauschale: **{lebenshaltungspauschale:.2f} €**")
+st.caption("Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet.")
 
+st.markdown("### Haushaltskosten")
 autos = st.number_input(
     "Wie viele Autos gibt es im Haushalt?",
-    min_value=0, max_value=5, step=1,
-    help="Für jedes Auto setzen wir pauschal 250€ an."
+    min_value=0, max_value=5, step=1
 )
+st.caption("Für jedes Auto setzen wir pauschal 250€ an.")
 auto_kosten = autos * 250
 
 versicherungen = st.number_input(
     "Monatliche Kosten für Lebens-, Unfallversicherungen oder Unterhaltszahlungen (€):",
-    min_value=0.0, step=50.0,
-    help="Geben Sie die Gesamtkosten an, die für solche Verpflichtungen monatlich anfallen."
+    min_value=0.0, step=50.0
 )
+st.caption("Geben Sie die Gesamtkosten an, die für solche Verpflichtungen monatlich anfallen.")
 
 kredite_sparraten = st.number_input(
     "Gibt es bestehende Kredite oder Sparraten? (€):",
-    min_value=0.0, step=50.0,
-    help="Geben Sie die Gesamtkosten für bestehende Kredite oder Sparverträge an."
+    min_value=0.0, step=50.0
 )
+st.caption("Geben Sie die Gesamtkosten für bestehende Kredite oder Sparverträge an.")
 
 andere_ausgaben = st.number_input(
     "Andere übermäßige Ausgaben (z.B. teurer Kindergarten, Mitgliedschaften)? (€):",
-    min_value=0.0, step=50.0,
-    help="Tragen Sie besondere monatliche Ausgaben ein, die über die normalen Kosten hinausgehen."
+    min_value=0.0, step=50.0
 )
+st.caption("Tragen Sie besondere monatliche Ausgaben ein, die über die normalen Kosten hinausgehen.")
 
+st.markdown("### Wohnsituation")
 wohnsituation = st.radio(
     "Wohnen Sie zur Miete oder haben Sie Eigentum?",
-    ("Miete", "Eigentum"),
-    help="Die Wohnsituation beeinflusst die monatlichen Kosten."
+    ("Miete", "Eigentum")
 )
+st.caption("Die Wohnsituation beeinflusst die monatlichen Kosten.")
 
 if wohnsituation == "Miete":
     warmmiete = st.number_input(
         "Wie hoch ist die monatliche Warmmiete? (€):",
-        min_value=0.0, step=50.0,
-        help="Die Warmmiete umfasst Miete, Betriebskosten und Heizkosten."
+        min_value=0.0, step=50.0
     )
+st.caption("Die Warmmiete umfasst Miete, Betriebskosten und Heizkosten.")
     wohnkosten = warmmiete
 else:
     eigentum_typ = st.radio(
         "Ist es ein Haus oder eine Wohnung?",
-        ("Haus", "Wohnung"),
-        help="Die Bewirtschaftungskosten variieren je nach Immobilientyp."
+        ("Haus", "Wohnung")
     )
+st.caption("Die Bewirtschaftungskosten variieren je nach Immobilientyp.")
     qm = st.number_input(
         f"Wie viele Quadratmeter hat das {eigentum_typ}?",
-        min_value=20, max_value=500, step=10,
-        help="Die Bewirtschaftungskosten werden pro Quadratmeter berechnet."
+        min_value=20, max_value=500, step=10
     )
+st.caption("Die Bewirtschaftungskosten werden pro Quadratmeter berechnet.")
     bewirtschaftungskosten = qm * 3.5
     if eigentum_typ == "Wohnung":
         hausgeld = st.number_input(
             "Wie hoch ist das Hausgeld? (€):",
-            min_value=0.0, step=50.0,
-            help="Das Hausgeld umfasst Betriebskosten, Rücklagen und Verwaltungsgebühren."
+            min_value=0.0, step=50.0
         )
+st.caption("Das Hausgeld umfasst Betriebskosten, Rücklagen und Verwaltungsgebühren.")
         wohnkosten = bewirtschaftungskosten + hausgeld
     else:
         wohnkosten = bewirtschaftungskosten
@@ -179,6 +184,7 @@ if st.button("Ergebnisse anzeigen"):
         st.pyplot(fig)
     else:
         st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+
 
 
 
