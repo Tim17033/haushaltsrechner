@@ -20,6 +20,7 @@ pauschalen_df = pd.DataFrame(pauschalen_data)
 # Hilfsfunktion zur Berechnung der Lebenshaltungspauschale
 
 def berechne_pauschale(nettoeinkommen, personen):
+    personen = min(personen, 7)  # Maximal 7 Personen berücksichtigen
     for index, row in pauschalen_df.iterrows():
         grenze = row["Nettoeinkommen"].split("bis ")[-1]
         try:
@@ -178,5 +179,6 @@ if st.button("Ergebnisse anzeigen"):
         st.pyplot(fig)
     else:
         st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+
 
 
