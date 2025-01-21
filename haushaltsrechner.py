@@ -60,13 +60,13 @@ if kreditnehmer == "Alleinstehend":
         "Nettoeinkommen der alleinstehenden Person (€):",
         min_value=0.0, step=100.0
     )
-st.caption("Tragen Sie das monatliche Nettoeinkommen ein.")
+    st.caption("Tragen Sie das monatliche Nettoeinkommen ein.")
 else:
     nettoeinkommen = st.number_input(
         "Gemeinsames Nettoeinkommen des Ehepaares (€):",
         min_value=0.0, step=100.0
     )
-st.caption("Tragen Sie das gemeinsame monatliche Nettoeinkommen ein.")
+    st.caption("Tragen Sie das gemeinsame monatliche Nettoeinkommen ein.")
 
 zusatz_einkommen = st.number_input(
     "Gibt es andere Einkommen (z.B. aus Vermietung und Verpachtung)? (€):",
@@ -83,7 +83,7 @@ if kreditnehmer and kinder is not None and nettohaushaltseinkommen:
     personen += kinder
     lebenshaltungspauschale = berechne_pauschale(nettohaushaltseinkommen, personen)
     st.markdown(f"### Lebenshaltungspauschale: **{lebenshaltungspauschale:.2f} €**")
-st.caption("Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet.")
+    st.caption("Dieser Wert wurde basierend auf Ihren Angaben automatisch berechnet.")
 
 st.markdown("### Haushaltskosten")
 autos = st.number_input(
@@ -123,26 +123,26 @@ if wohnsituation == "Miete":
         "Wie hoch ist die monatliche Warmmiete? (€):",
         min_value=0.0, step=50.0
     )
-st.caption("Die Warmmiete umfasst Miete, Betriebskosten und Heizkosten.")
+    st.caption("Die Warmmiete umfasst Miete, Betriebskosten und Heizkosten.")
     wohnkosten = warmmiete
 else:
     eigentum_typ = st.radio(
         "Ist es ein Haus oder eine Wohnung?",
         ("Haus", "Wohnung")
     )
-st.caption("Die Bewirtschaftungskosten variieren je nach Immobilientyp.")
+    st.caption("Die Bewirtschaftungskosten variieren je nach Immobilientyp.")
     qm = st.number_input(
         f"Wie viele Quadratmeter hat das {eigentum_typ}?",
         min_value=20, max_value=500, step=10
     )
-st.caption("Die Bewirtschaftungskosten werden pro Quadratmeter berechnet.")
+    st.caption("Die Bewirtschaftungskosten werden pro Quadratmeter berechnet.")
     bewirtschaftungskosten = qm * 3.5
     if eigentum_typ == "Wohnung":
         hausgeld = st.number_input(
             "Wie hoch ist das Hausgeld? (€):",
             min_value=0.0, step=50.0
         )
-st.caption("Das Hausgeld umfasst Betriebskosten, Rücklagen und Verwaltungsgebühren.")
+        st.caption("Das Hausgeld umfasst Betriebskosten, Rücklagen und Verwaltungsgebühren.")
         wohnkosten = bewirtschaftungskosten + hausgeld
     else:
         wohnkosten = bewirtschaftungskosten
@@ -184,6 +184,7 @@ if st.button("Ergebnisse anzeigen"):
         st.pyplot(fig)
     else:
         st.warning("Der verfügbare Betrag für den Kredit ist 0 €. Es kann kein Diagramm erstellt werden.")
+
 
 
 
